@@ -1,5 +1,8 @@
-require 'fraggle/block'
-require 'irb'
+#!/usr/bin/env ruby
 
-@client = Fraggle::Block.connect ARGV.shift
+$:.unshift(File.join(File.expand_path(File.dirname(__FILE__)), "../lib"))
+require "fraggle/block"
+require "irb"
+
+@client = Fraggle::Block.connect
 IRB.start

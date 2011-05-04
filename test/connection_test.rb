@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/helper'
 module Fraggle
   module Block
     class ConnectionTest < Test::Unit::TestCase
-      include Request::Verb 
+      include Request::Verb
       def setup
         @connection = Fraggle::Block::MockConnection.new('1.1.1.1', 1)
       end

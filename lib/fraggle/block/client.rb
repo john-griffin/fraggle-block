@@ -16,33 +16,23 @@ module Fraggle
       end
 
       def rev
-        request = Request.new(:verb => REV)
-        send(request).first
+        send(:verb => REV)
       end
 
-      def get(path, rev = nil)
-        request = Request.new(:path => path, :rev => rev, :verb => GET)
-        send(request).first
+      def get(rev, path)
+        send(:verb => GET, :rev => rev, :path => path)
       end
 
-      def getdir(path, rev = nil, offset = nil, limit = nil)
-        request = Request.new(:path => path, :rev => rev, :offset => offset, :limit => limit, :verb => GETDIR)
-        send(request)
+      def set(rev, path, value)
+        send(:verb => SET, :rev => rev, :path => path, :value => value)
       end
 
-      def set(path, value, rev)
-        request = Request.new(:path => path, :value => value, :rev => rev, :verb => SET)
-        send(request).first
+      def del(rev, path)
+        send(:verb => DEL, :rev => rev, :path => path)
       end
 
-      def del(path, rev)
-        request = Request.new(:path => path, :rev => rev, :verb => DEL)
-        send(request).first
-      end
-
-      def walk(path, rev = nil)
-        request = Request.new(:path => path, :rev => rev, :verb => WALK)
-        send(request)
+      def walk(rev, path, offset)
+        send(:verb => WALK, :rev => rev, :path => path, :offset => offset)
       end
 
       def disconnect
@@ -56,12 +46,12 @@ module Fraggle
 
       def connect
         begin
-          host, port = @addrs.shift.split(':')
+          host, port = @addrs.shift.split(":")
           @connection = connection_to(host, port)
           find_all_of_the_nodes
         rescue => e
           retry if @addrs.any?
-          raise OutOfNodes, "where did they go?"
+          raise(OutOfNodes, "where did they go?")
         end
       end
 
@@ -70,15 +60,23 @@ module Fraggle
       end
 
       def find_all_of_the_nodes
-        walk('/ctl/node/*/addr').each do |node|
-          @addrs << node.value unless @addrs.include? node.value
+        r = rev.rev
+        i = 0
+        loop do
+          res = walk(r, "/ctl/node/*/addr", i)
+          if res.ok?
+            i += 1
+            @addrs << res.value if !(@addrs.include?(res.value))
+          else
+            break
+          end
         end
       end
 
     protected
 
       def send(request)
-        @connection.send(request)
+        @connection.send(Request.new(request))
         @connection.read
       end
     end

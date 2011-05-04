@@ -37,16 +37,10 @@ module Fraggle
       end
 
       def read
-        responses = []
-        loop do
-          head = @sock.read(4)
-          length = head.unpack("N")[0]
-          data = @sock.read(length)
-          response = Response.decode(data)
-          responses << response if response.valid? 
-          break if response.done?
-        end
-        responses
+        head = @sock.read(4)
+        length = head.unpack("N")[0]
+        data = @sock.read(length)
+        Response.decode(data)
       end
     end
   end

@@ -18,7 +18,7 @@ module Fraggle
       addrs = URI.parse(uri)
 
       if addrs.length == 0
-        raise ArgumentError, "there were no addrs supplied in the uri (#{uri.inspect})"
+        raise(ArgumentError, "no addrs in doozerd uri '#{uri.inspect}'")
       end
 
       Client.new(addrs)

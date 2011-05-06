@@ -5,7 +5,9 @@ module Fraggle
     class Client
       include Request::Verb
 
-      class OutOfNodes < StandardError; end
+      MaxInt64 = 1<<63 - 1
+
+      class NoMoreAddrs < StandardError; end
 
       attr_accessor :addrs
       attr_reader :connection
@@ -51,7 +53,7 @@ module Fraggle
           find_all_of_the_nodes
         rescue => e
           retry if @addrs.any?
-          raise(OutOfNodes, "where did they go?")
+          raise(NoMoreAddrs)
         end
       end
 

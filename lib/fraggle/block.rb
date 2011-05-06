@@ -3,6 +3,8 @@ require 'fraggle/block/response'
 
 module Fraggle
   module Block
+    Clobber = Client::MaxInt64
+
     DEFAULT_URI = "doozer:?" + [
       "ca=127.0.0.1:8046",
       "ca=127.0.0.1:8041",

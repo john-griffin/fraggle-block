@@ -49,16 +49,12 @@ module Fraggle
       def connect
         begin
           host, port = @addrs.shift.split(":")
-          @connection = connection_to(host, port)
+          @connection = Connection.new(host, port)
           find_all_of_the_nodes
         rescue => e
           retry if @addrs.any?
           raise(NoMoreAddrs)
         end
-      end
-
-      def connection_to(host, port)
-        Connection.new(host, port)
       end
 
       def find_all_of_the_nodes

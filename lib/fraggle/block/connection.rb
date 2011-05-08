@@ -1,5 +1,5 @@
-require 'fraggle/block/msg.pb'
-require 'socket'
+require "fraggle/block/msg.pb"
+require "socket"
 require "system_timer"
 
 module Fraggle

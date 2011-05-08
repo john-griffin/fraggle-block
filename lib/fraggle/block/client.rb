@@ -1,4 +1,4 @@
-require 'fraggle/block/connection'
+require "fraggle/block/connection"
 
 module Fraggle
   module Block

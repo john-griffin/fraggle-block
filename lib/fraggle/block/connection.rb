@@ -40,6 +40,7 @@ module Fraggle
 
       def read
         head = @sock.read(4)
+        raise(DisconnectedError) if !head
         length = head.unpack("N")[0]
         data = @sock.read(length)
         raise(DisconnectedError) if !data

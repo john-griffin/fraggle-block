@@ -5,8 +5,6 @@ require "system_timer"
 module Fraggle
   module Block
     class Connection
-      class DisconnectedError < StandardError; end
-
       attr_accessor :host, :port, :sock
 
       def initialize(host, port)
@@ -40,10 +38,10 @@ module Fraggle
 
       def read
         head = @sock.read(4)
-        raise(DisconnectedError) if !head
+        raise(Errno::ECONNRESET) if !head
         length = head.unpack("N")[0]
         data = @sock.read(length)
-        raise(DisconnectedError) if !data
+        raise(Errno::ECONNRESET) if !data
         Response.decode(data)
       end
     end

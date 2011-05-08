@@ -20,7 +20,7 @@ module Fraggle
       def connect
         SystemTimer.timeout_after(10) do
           s = TCPSocket.new(@host, @port)
-          s.setsockopt Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1
+          s.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1)
           s
         end
       end

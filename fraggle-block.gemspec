@@ -21,4 +21,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency "beefcake", "~>0.3"
   s.add_dependency "system_timer", "1.0"
+  s.add_development_dependency "rake"
 end

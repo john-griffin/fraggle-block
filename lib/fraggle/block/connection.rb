@@ -1,6 +1,6 @@
 require "fraggle/block/msg.pb"
 require "socket"
-require "system_timer"
+require "timeout"
 
 module Fraggle
   module Block
@@ -18,7 +18,7 @@ module Fraggle
       end
 
       def connect
-        SystemTimer.timeout_after(10) do
+        Timeout::timeout(10) do
           s = TCPSocket.new(@host, @port)
           s.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1)
           s
